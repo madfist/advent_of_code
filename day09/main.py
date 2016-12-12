@@ -9,29 +9,23 @@ def decompress(data):
         if s is None:
             decompressed += d
             break
-        # print(s.groups())
         dec, marker, d = d.partition(s.group(1))
         decompressed += dec
         for i in range(int(s.group(3))):
             decompressed += d[:int(s.group(2))]
         d = d[int(s.group(2)):]
-    # print("dec:", decompressed)
     return decompressed
 
 def dec(d):
-    print("dec", d)
     length = 0
     while len(d):
         s = re.match(r'^.*?(\((\d+?)x(\d+?)\))(.*)', d)
         if s is None:
-            print("end", d, len(d))
             return length + len(d)
-        # print(d, s.groups())
         decomp, marker, d = d.partition(s.group(1))
-        length += int(s.group(3)) * dec(d[:int(s.group(2))])
+        length += len(decomp) + int(s.group(3)) * dec(d[:int(s.group(2))])
         d = d[int(s.group(2)):]
-    print("L",length)
-    return len(decomp) + length
+    return length
 
 
 def full_decompress(data):

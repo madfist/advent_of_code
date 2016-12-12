@@ -36,4 +36,4 @@ Unfortunately, the computer you brought probably doesn't have enough memory to a
 
 What is the decompressed length of the file using this improved format?
 
-Although it hasn't changed, you can still get your puzzle input.
+Your puzzle answer was 10915059201.
