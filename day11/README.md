@@ -112,3 +112,30 @@ F1 .  .  .  .  .
 In this arrangement, it takes 11 steps to collect all of the objects at the fourth floor for assembly. (Each elevator stop counts as one step, even if nothing is added to or removed from it.)
 
 In your situation, what is the minimum number of steps required to bring all of the objects to the fourth floor?
+
+Input:
+```
+The first floor contains a promethium generator and a promethium-compatible microchip.
+The second floor contains a cobalt generator, a curium generator, a ruthenium generator, and a plutonium generator.
+The third floor contains a cobalt-compatible microchip, a curium-compatible microchip, a ruthenium-compatible microchip, and a plutonium-compatible microchip.
+The fourth floor contains nothing relevant.
+```
+
+Your puzzle answer was 33.
+
+## --- Part Two ---
+
+You step into the cleanroom separating the lobby from the isolated area and put on the hazmat suit.
+
+Upon entering the isolated containment area, however, you notice some extra parts on the first floor that weren't listed on the record outside:
+
+- An elerium generator.
+- An elerium-compatible microchip.
+- A dilithium generator.
+- A dilithium-compatible microchip.
+
+These work just like the other generators and microchips. You'll have to get them up to assembly as well.
+
+What is the minimum number of steps required to bring all of the objects, including these four new ones, to the fourth floor?
+
+Your puzzle answer was 57.
