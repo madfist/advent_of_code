@@ -1,0 +1,10 @@
+{
+  "name": "aoc-2018-day07",
+  "description": "Advent of Code - 2018 - Day07",
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "tree-model": "~1.0.7",
+    "fs-extra": "~7.0.0"
+  }
+}
