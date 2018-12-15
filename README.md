@@ -1,4 +1,4 @@
-# Advent of Code Solution
+# Advent of Code Solutions
 
 ## Build
 ```
