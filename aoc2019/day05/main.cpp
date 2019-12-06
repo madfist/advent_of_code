@@ -36,7 +36,7 @@ iv_t compute(const iv_t& program, int input) {
         p[t[1]] = input; t+=2; break;
       case 4:
         //std::cout << "out" << p[t[1]] << '\n';
-        ret.push_back(p[t[1]]); t+=2; break;
+        ret.push_back(a); t+=2; break;
       case 5:
         //std::cout << "jump-true" << '\n';
         t = (a != 0) ? p.begin() + b : t+3; break;
