@@ -29,3 +29,6 @@
 *.app
 
 *.stackdump
+
+*.sublime-workspace
+.ccls-cache
