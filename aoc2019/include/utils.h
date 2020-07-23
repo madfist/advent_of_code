@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <deque>
 
 template<typename T1, typename T2>
 std::ostream& operator<<(std::ostream& os, const std::pair<T1,T2>& s) {
@@ -18,6 +19,17 @@ std::ostream& operator<<(std::ostream& os, const std::vector<char> v) {
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T> v) {
+  for (auto i = v.begin(); i != v.end(); ++i) {
+    os << *i;
+    if (i != v.end() - 1) {
+      os << ' ';
+    }
+  }
+  return os;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::deque<T> v) {
   for (auto i = v.begin(); i != v.end(); ++i) {
     os << *i;
     if (i != v.end() - 1) {
