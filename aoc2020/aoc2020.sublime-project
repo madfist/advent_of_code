@@ -10,7 +10,7 @@
 		"LSP":
 		{
 			"clangd": { "enabled": false },
-      		"ccls": { "enabled": true }
+  		 "ccls": { "enabled": false }
 		}
 	}
 }
