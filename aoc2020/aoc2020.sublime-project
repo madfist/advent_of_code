@@ -1,16 +1,16 @@
 {
-	"folders":
-	[
-		{
-			"path": "."
-		}
-	],
-	"settings":
-	{
-		"LSP":
-		{
-			"clangd": { "enabled": false },
-  		 "ccls": { "enabled": false }
-		}
-	}
+  "folders":
+  [
+    {
+      "path": "."
+    }
+  ],
+  "settings":
+  {
+    "LSP":
+    {
+      "clangd": { "enabled": false },
+      "ccls": { "enabled": true }
+    }
+  }
 }
