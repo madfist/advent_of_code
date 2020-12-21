@@ -4,6 +4,7 @@
 #include <set>
 #include <algorithm>
 #include <iterator>
+#include <map>
 
 template<template<typename> class C, typename T>
 std::ostream& operator<<(std::ostream& os, const C<T>& c) {
@@ -52,6 +53,14 @@ std::ostream& operator<<(std::ostream& os, const std::deque<T> v) {
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::set<T> s) {
   for (auto i = s.begin(); i != s.end(); ++i) {
+    os << *i << ',';
+  }
+  return os;
+}
+
+template<typename K, typename V>
+std::ostream& operator<<(std::ostream& os, const std::map<K, V> m) {
+  for (auto i = m.begin(); i != m.end(); ++i) {
     os << *i << ',';
   }
   return os;
