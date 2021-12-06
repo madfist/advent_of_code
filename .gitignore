@@ -27,6 +27,7 @@
 *.exe
 *.out
 *.app
+out
 
 *.stackdump
 

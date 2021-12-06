@@ -8,18 +8,18 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-      if (args.length < 2) {
-        System.out.println("Usage java Main.java <day> <input>");
+      if (args.length != 1) {
+        System.out.println("Usage java Main.java <day No.>");
         System.exit(1);
       }
       var main = new Main();
-      var input = main.readInput(args[1]);
+      var input = main.readInput("day" + args[0] + ".input");
 
       try {
-        Class<? extends Day> dayClass = Class.forName("dev.madfist." + args[0]).asSubclass(Day.class);
+        Class<? extends Day> dayClass = Class.forName("dev.madfist.Day" + args[0]).asSubclass(Day.class);
         Day day = dayClass.getDeclaredConstructor().newInstance();
-        System.out.println(day.solveFirst(input));
-        System.out.println(day.solveSecond(input));
+        System.out.println("part 1: " + day.solveFirst(input));
+        System.out.println("part 2: " + day.solveSecond(input));
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
