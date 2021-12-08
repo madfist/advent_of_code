@@ -14,12 +14,22 @@ public class Main {
       }
       var main = new Main();
       var input = main.readInput("day" + args[0] + ".input");
+      List<String> example = null;
+      if (new File("example").exists()) {
+        example = main.readInput("example");
+      }
 
       try {
         Class<? extends Day> dayClass = Class.forName("dev.madfist.Day" + args[0]).asSubclass(Day.class);
         Day day = dayClass.getDeclaredConstructor().newInstance();
-        System.out.println("part 1: " + day.solveFirst(input));
-        System.out.println("part 2: " + day.solveSecond(input));
+
+        if (example != null) {
+          System.out.println("example part 1: " + day.solveFirst(example));
+          System.out.println("example part 2: " + day.solveSecond(example));
+        } else {
+          System.out.println("part 1: " + day.solveFirst(input));
+          System.out.println("part 2: " + day.solveSecond(input));
+        }
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
