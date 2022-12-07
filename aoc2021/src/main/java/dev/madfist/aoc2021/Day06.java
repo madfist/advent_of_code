@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.Arrays;
 import java.util.Collections;

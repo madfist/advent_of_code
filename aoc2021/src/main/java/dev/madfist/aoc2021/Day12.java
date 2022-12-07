@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.ArrayList;
 import java.util.HashMap;

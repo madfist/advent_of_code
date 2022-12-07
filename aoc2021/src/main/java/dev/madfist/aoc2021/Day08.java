@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,8 +33,8 @@ public class Day08 implements Day {
       mapping.put(seven, '7');
       var four = mappings.parallelStream().filter(m -> m.length() == 4).findFirst().orElseThrow(RuntimeException::new);
       mapping.put(four, '4');
-      var fiveParts = mappings.parallelStream().filter(m -> m.length() == 5).toList();
-      var sixParts = mappings.parallelStream().filter(m -> m.length() == 6).toList();
+      var fiveParts = mappings.parallelStream().filter(m -> m.length() == 5).collect(Collectors.toList());
+      var sixParts = mappings.parallelStream().filter(m -> m.length() == 6).collect(Collectors.toList());
       var eight = mappings.parallelStream().filter(m -> m.length() == 7).findFirst().orElseThrow(RuntimeException::new);
       mapping.put(eight, '8');
 

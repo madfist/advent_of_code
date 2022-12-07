@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,12 +49,14 @@ public class Day10 implements Day {
           list = removePairs(list);
         } while (list.size() < origSize);
         var invalidChar = list.stream().filter(c -> CLOSERS.indexOf(c) >= 0).findFirst();
-        return invalidChar.map(character -> switch (character) {
-          case ')' -> 3;
-          case ']' -> 57;
-          case '}' -> 1197;
-          case '>' -> 25137;
-          default -> 0;
+        return invalidChar.map(character -> {
+          switch (character) {
+            case ')': return 3;
+            case ']': return 57;
+            case '}': return 1197;
+            case '>': return 25137;
+            default: return 0;
+          }
         }).orElse(0);
       }).sum();
     return Integer.toString(score);
@@ -77,12 +79,13 @@ public class Day10 implements Day {
         Collections.reverse(list);
         long score = 0;
         for (var c : list) {
-          var charScore = switch (c) {
-            case '(' -> 1;
-            case '[' -> 2;
-            case '{' -> 3;
-            case '<' -> 4;
-            default -> 0;
+          int charScore;
+          switch (c) {
+            case '(': charScore = 1; break;
+            case '[': charScore = 2; break;
+            case '{': charScore = 3; break;
+            case '<': charScore = 4; break;
+            default: charScore = 0; break;
           };
           score = score * 5 + charScore;
         }

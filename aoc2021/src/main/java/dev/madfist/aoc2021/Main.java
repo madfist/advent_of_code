@@ -1,6 +1,9 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,14 +16,15 @@ public class Main {
         System.exit(1);
       }
       var main = new Main();
-      var input = main.readInput("day" + args[0] + ".input");
+      var input = main.readResource("inputs/day" + args[0] + ".input");
       List<String> example = null;
       if (new File("example").exists()) {
         example = main.readInput("example");
       }
 
       try {
-        Class<? extends Day> dayClass = Class.forName("dev.madfist.Day" + args[0]).asSubclass(Day.class);
+        Class<? extends Day> dayClass =
+            Class.forName("dev.madfist.aoc2021.Day" + args[0]).asSubclass(Day.class);
         Day day = dayClass.getDeclaredConstructor().newInstance();
 
         if (example != null) {
@@ -45,6 +49,24 @@ public class Main {
         }
       } catch (Exception e) {
         System.out.println("Cannot open " + filename);
+      }
+      return list;
+    }
+
+    private List<String> readResource(String filename) {
+      var list = new ArrayList<String>();
+      var classLoader = Main.class.getClassLoader();
+      var inputStream = classLoader.getResourceAsStream(filename);
+      if (inputStream == null) {
+        throw new IllegalArgumentException("Cannot open " + filename);
+      }
+      var reader = new BufferedReader(new InputStreamReader(inputStream));
+      try {
+        while (reader.ready()) {
+          list.add(reader.readLine());
+        }
+      } catch (IOException e) {
+        System.out.println("Error reading " + filename);
       }
       return list;
     }

@@ -1,6 +1,7 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Day09 implements Day {
@@ -24,10 +25,10 @@ public class Day09 implements Day {
       var depthMap = input.parallelStream()
       .map(s -> Arrays.stream(s.split("")).map(Integer::parseInt).toArray(Integer[]::new))
       .flatMap(Arrays::stream)
-      .toList();
+      .collect(Collectors.toList());
       coordinates = IntStream.range(0, width * height)
         .mapToObj(i -> new Coordinate(i % width, i / height, depthMap.get(i)))
-        .toList();
+        .collect(Collectors.toList());
     }
     Coordinate get(int x, int y) {
       return coordinates.get(y * width + x);
@@ -61,7 +62,9 @@ public class Day09 implements Day {
       return lowPoints;
     }
     List<Set<Coordinate>> getBasins() {
-      return getLowPoints().parallelStream().map(lp -> checkNeighbours(lp.x, lp.y, new HashSet<>())).toList();
+      return getLowPoints().parallelStream()
+        .map(lp -> checkNeighbours(lp.x, lp.y, new HashSet<>()))
+        .collect(Collectors.toList());
     }
     private Set<Coordinate> checkNeighbours(int x, int y, Set<Coordinate> coordinateSet) {
       if (getZ(x, y) == 9) {

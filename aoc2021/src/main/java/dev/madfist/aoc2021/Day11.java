@@ -1,12 +1,12 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Day11 implements Day {
-  private static int WIDTH = 10;
-  private static int HEIGHT = 10;
+  private static final int WIDTH = 10;
+  private static final int HEIGHT = 10;
 
   private static class Octopus{
     int charge;
@@ -68,14 +68,14 @@ public class Day11 implements Day {
       return sb.toString();
     }
 
-    private static int W = -1;
-    private static int E = 1;
-    private static int N = -WIDTH;
-    private static int S = WIDTH;
-    private static int NW = N + W;
-    private static int SW = S + W;
-    private static int NE = N + E;
-    private static int SE = S + E;
+    private static final int W = -1;
+    private static final int E = 1;
+    private static final int N = -WIDTH;
+    private static final int S = WIDTH;
+    private static final int NW = N + W;
+    private static final int SW = S + W;
+    private static final int NE = N + E;
+    private static final int SE = S + E;
 
     private void inc(int i) {
       values.get(i).inc();
@@ -119,7 +119,7 @@ public class Day11 implements Day {
     var numbers = input.parallelStream()
       .map(s -> Arrays.stream(s.split("")).map(Integer::parseInt).toArray(Integer[]::new))
       .flatMap(Arrays::stream)
-      .toList();
+      .collect(Collectors.toList());
     var matrix = new DumboOctopusMatrix(numbers);
 //    System.out.println(matrix);
     for (int i = 0; i < 100; ++i) {
@@ -136,7 +136,7 @@ public class Day11 implements Day {
     var numbers = input.parallelStream()
       .map(s -> Arrays.stream(s.split("")).map(Integer::parseInt).toArray(Integer[]::new))
       .flatMap(Arrays::stream)
-      .toList();
+      .collect(Collectors.toList());
     var matrix = new DumboOctopusMatrix(numbers);
 //    System.out.println(matrix);
     int step = 0;

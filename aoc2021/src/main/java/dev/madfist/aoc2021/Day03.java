@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Day03 implements Day {
   @Override
@@ -25,11 +26,11 @@ public class Day03 implements Day {
       int finalI = i;
       if (oxygenInput.size() > 1) {
         var rating = oxygenInput.parallelStream().collect(new LifeSupportDiagnosticCollector(i, LifeSupportRating.O2));
-        oxygenInput = oxygenInput.parallelStream().filter(line -> line.charAt(finalI) == rating).toList();
+        oxygenInput = oxygenInput.parallelStream().filter(line -> line.charAt(finalI) == rating).collect(Collectors.toList());
       }
       if (co2Input.size() > 1) {
         var rating = co2Input.parallelStream().collect(new LifeSupportDiagnosticCollector(i, LifeSupportRating.CO2));
-        co2Input = co2Input.parallelStream().filter(line -> line.charAt(finalI) == rating).toList();
+        co2Input = co2Input.parallelStream().filter(line -> line.charAt(finalI) == rating).collect(Collectors.toList());
       }
     }
     int oxygen = Integer.parseInt(oxygenInput.get(0), 2);
@@ -39,9 +40,9 @@ public class Day03 implements Day {
 }
 
 class PowerConsumptionDiagnostic {
-  private int[] ones;
-  private int[] zeros;
-  private int size;
+  private final int[] ones;
+  private final int[] zeros;
+  private final int size;
 
   public PowerConsumptionDiagnostic(int size) {
     this.size = size;

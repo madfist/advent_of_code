@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +46,7 @@ class Day05Test {
       "0,0 -> 8,8", "5,5 -> 8,2");
 
     var day5 = new Day05();
-    assertEquals("5", day5.solveSecond(input));
+    assertEquals("12", day5.solveSecond(input));
   }
 
   @Test
@@ -61,6 +61,6 @@ class Day05Test {
       "2,0 -> 2,1", "9,4 -> 3,4");
 
     var day5 = new Day05();
-    assertEquals("12", day5.solveSecond(input));
+    assertEquals("18", day5.solveSecond(input));
   }
 }

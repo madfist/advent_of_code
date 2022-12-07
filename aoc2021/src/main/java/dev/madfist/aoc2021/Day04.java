@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Day04 implements Day {
   @Override
@@ -65,7 +66,7 @@ public class Day04 implements Day {
   }
 
   private List<Board> buildBoards(List<String> input) {
-    var filteredList = input.stream().filter(Predicate.not(String::isBlank)).toList();
+    var filteredList = input.stream().filter(Predicate.not(String::isBlank)).collect(Collectors.toList());
     var boards = new ArrayList<Board>();
     StringBuilder builder = new StringBuilder();
     for (int i = 1; i < filteredList.size(); ++i) {

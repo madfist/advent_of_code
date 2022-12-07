@@ -1,4 +1,4 @@
-package dev.madfist;
+package dev.madfist.aoc2021;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -85,7 +85,7 @@ public class Day05 implements Day {
     List<Coordinate> intersect(Line l) {
       var points = getPoints();
       points.retainAll(l.getPoints());
-      return points.stream().toList();
+      return new ArrayList<>(points);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class Day05 implements Day {
         return new Line(0, 0, 0, 0);
       })
       .filter(filter)
-      .toList();
+      .collect(Collectors.toList());
 //    System.out.println(lines);
     var intersections = new HashMap<Coordinate, Integer>();
     for (int i = 0; i < lines.size() - 1; ++i) {
