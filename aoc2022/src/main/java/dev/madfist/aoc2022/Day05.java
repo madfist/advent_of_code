@@ -85,11 +85,7 @@ public class Day05 implements Day {
     public String getTopCrates() {
       return stacks.stream()
         .map(LinkedList::peekLast)
-        .collect(Collector.of(
-          StringBuilder::new,
-          StringBuilder::append,
-          StringBuilder::append,
-          StringBuilder::toString));
+        .collect(Utils.collectToString());
     }
   }
 }
