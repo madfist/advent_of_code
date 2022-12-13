@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,16 +41,16 @@ public class Day11 implements Day {
         if (opMatcher.matches()) {
             final var other = Integer.parseInt(opMatcher.group(2));
           if (opMatcher.group(1).equals("+")) {
-            monkey.assignOperation((num, div) -> div != 0 ? (num + other) % div : num + other);
+            monkey.assignOperation(num -> num + other);
           } else {
-            monkey.assignOperation((num, div) -> div != 0 ? (num * other) % div : num * other);
+            monkey.assignOperation(num -> num * other);
           }
         } else {
           var numMatcher = quadFunctionPattern.matcher(opStr);
           if (numMatcher.matches()) {
             monkey.assignOperation(numMatcher.group(1).equals("+")
-              ? (num, div) -> div != 0 ? (num + num) % div : num + num
-              : (num, div) -> div != 0 ? (num * num) % div : num * num);
+              ? num -> num + num
+              : num -> num * num);
           }
         }
       }
@@ -80,9 +79,10 @@ public class Day11 implements Day {
   long solve(List<String> input, int cycles, boolean managedWorryLevel) {
     var monkeys = parseInput(input, managedWorryLevel);
     for (int i = 0; i < cycles; ++i) {
-      System.out.println(i + ". " + monkeys);
+      System.out.println("s" + i + ". " + monkeys);
       for (var m : monkeys) {
         var nextMonkeys = m.turn();
+      System.out.println("m" + monkeys.indexOf(m) + ". " + m);
         System.out.println(nextMonkeys);
         for (var nextMonkey : nextMonkeys) {
           m.throwFirstItem(monkeys.get(nextMonkey));
@@ -97,7 +97,7 @@ public class Day11 implements Day {
   static class Monkey {
     private final boolean managedWorryLevel;
     List<Integer> items;
-    BiFunction<Integer, Integer, Integer> operation;
+    Function<Integer, Integer> operation;
     long inspections = 0;
     int divider = 0;
     int nextMonkeyIndex1;
@@ -115,7 +115,7 @@ public class Day11 implements Day {
       this.items = this.items.stream().map(item -> item % divider).collect(Collectors.toList());
     }
 
-    public void assignOperation(BiFunction<Integer, Integer, Integer> operation) {
+    public void assignOperation(Function<Integer, Integer> operation) {
       this.operation = operation;
     }
 
@@ -123,7 +123,10 @@ public class Day11 implements Day {
       var itemThrows = new ArrayList<Integer>(items.size());
       for (int i = 0; i < items.size(); ++i) {
         items.set(i, getOperation().apply(items.get(i)));
-        itemThrows.add(items.get(0) % divider == 0 ? nextMonkeyIndex1 : nextMonkeyIndex2);
+        var nextMonkey = managedWorryLevel
+          ? items.get(i) % divider == 0 ? nextMonkeyIndex1 : nextMonkeyIndex2
+          : items.get(i) == 0 ? nextMonkeyIndex1 : nextMonkeyIndex2;
+        itemThrows.add(nextMonkey);
         ++inspections;
       }
       return itemThrows;
@@ -140,9 +143,9 @@ public class Day11 implements Day {
 
     public Function<Integer, Integer> getOperation() {
       if (managedWorryLevel) {
-        return num -> Math.floorDiv(operation.apply(num, 0), 3);
+        return num -> Math.floorDiv(operation.apply(num), 3);
       }
-      return num -> operation.apply(num, divider);
+      return num -> operation.apply(num) % divider;
     }
 
     public long getInspections() {
