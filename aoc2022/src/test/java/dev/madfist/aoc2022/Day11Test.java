@@ -2,6 +2,7 @@ package dev.madfist.aoc2022;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,28 +48,27 @@ public class Day11Test {
       "    If true: throw to monkey 2",
       "    If false: throw to monkey 3");
     var day = new Day11();
-    var monkeysManaged = day.parseInput(singleExample, true);
+    var monkeysManaged = day.parseMonkeys(singleExample, true);
     assertEquals(1, monkeysManaged.size());
-    assertIterableEquals(List.of(79, 98), monkeysManaged.get(0).getItems());
-    assertEquals(63, monkeysManaged.get(0).getOperation().apply(10));
-    assertEquals(23, monkeysManaged.get(0).getDivider());
+    assertIterableEquals(List.of(BigInteger.valueOf(79), BigInteger.valueOf(98)), monkeysManaged.get(0).getItems());
+    assertEquals(BigInteger.valueOf(63), monkeysManaged.get(0).getOperation().apply(BigInteger.valueOf(10)));
+    assertEquals(BigInteger.valueOf(23), monkeysManaged.get(0).getDivisor());
     assertEquals(2, monkeysManaged.get(0).getNextMonkeyIndex1());
     assertEquals(3, monkeysManaged.get(0).getNextMonkeyIndex2());
     assertIterableEquals(List.of(3, 3), monkeysManaged.get(0).turn());
-    assertIterableEquals(List.of(500, 620), monkeysManaged.get(0).getItems());
-    assertEquals(2, monkeysManaged.get(0).getInspections());
+    assertIterableEquals(List.of(BigInteger.valueOf(500), BigInteger.valueOf(620)), monkeysManaged.get(0).getItems());
+    assertEquals(BigInteger.valueOf(2), monkeysManaged.get(0).getInspections());
 
-    var monkeysUnmanaged = day.parseInput(singleExample, false);
+    var monkeysUnmanaged = day.parseMonkeys(singleExample, false);
     assertEquals(1, monkeysManaged.size());
-    assertEquals(23, monkeysManaged.get(0).getDivider());
-    assertIterableEquals(List.of(10, 6), monkeysUnmanaged.get(0).getItems());
-    assertEquals(6, monkeysUnmanaged.get(0).getOperation().apply(10));
-    assertEquals(23, monkeysUnmanaged.get(0).getDivider());
+    assertEquals(BigInteger.valueOf(23), monkeysManaged.get(0).getDivisor());
+    assertEquals(BigInteger.valueOf(190), monkeysUnmanaged.get(0).getOperation().apply(BigInteger.valueOf(10)));
+    assertEquals(BigInteger.valueOf(23), monkeysUnmanaged.get(0).getDivisor());
     assertEquals(2, monkeysUnmanaged.get(0).getNextMonkeyIndex1());
     assertEquals(3, monkeysUnmanaged.get(0).getNextMonkeyIndex2());
     assertIterableEquals(List.of(3, 3), monkeysUnmanaged.get(0).turn());
-    assertIterableEquals(List.of(6, 22), monkeysUnmanaged.get(0).getItems());
-    assertEquals(2, monkeysUnmanaged.get(0).getInspections());
+    assertIterableEquals(List.of(BigInteger.valueOf(1501), BigInteger.valueOf(1862)), monkeysUnmanaged.get(0).getItems());
+    assertEquals(BigInteger.valueOf(2), monkeysUnmanaged.get(0).getInspections());
   }
 
   @Test
@@ -80,8 +80,10 @@ public class Day11Test {
   @Test
   public void example2() {
     var day = new Day11();
-    assertEquals(24L, day.solve(example, 1, false));
-    assertEquals(10197L, day.solve(example, 20, false));
+    var monkeyBusiness = day.parseMonkeyBusiness(example);
+    assertEquals(List.of(6L, 4L, 3L, 2L), monkeyBusiness.doRounds(1));
+    assertEquals(List.of(103L, 99L, 97L, 8L), monkeyBusiness.doRounds(19));
+    assertEquals(List.of(5204L, 5192L, 4792L, 199L), monkeyBusiness.doRounds(980));
     assertEquals("2713310158", day.solveSecond(example));
   }
 }
