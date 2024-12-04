@@ -10,4 +10,9 @@ public class Utils {
           StringBuilder::append,
           StringBuilder::toString);
   }
+
+  public static <T> T printReturn(T value) {
+    System.out.println(value);
+    return value;
+  }
 }

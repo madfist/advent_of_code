@@ -2,14 +2,18 @@ package dev.madfist.aoc2022;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static dev.madfist.aoc2022.Utils.collectToString;
+import static dev.madfist.aoc2022.Utils.printReturn;
 
 public class Day13 implements Day {
   @Override
   public String solveFirst(List<String> input) {
     var pairs = parseInput(input);
-    return Long.toString(pairs.stream().mapToInt(Pair::compare).filter(n -> n == -1).count());
+    return Long.toString(IntStream.range(0, pairs.size())
+      .map(i -> {System.out.println(pairs.get(i)); return pairs.get(i).compare() < 0 ? i + 1 : 0;})
+      .sum());
   }
 
   @Override
@@ -24,27 +28,27 @@ public class Day13 implements Day {
       if (line.isBlank()) {
         continue;
       }
-      Node root = new Node(null);
-      Node actual = root;
+      Node root = new ListNode(null);
+      Node actual = null;
       StringBuilder numberBuilder = new StringBuilder();
       for (var c: line.toCharArray()) {
-        if (actual == null) {
-          break;
-        }
         if (c == '[') {
-          actual = actual.addChild();
+          actual = actual != null
+            ? actual.addChild()
+            : root;
         } else if (c == ']') {
+          assert actual != null;
           if (numberBuilder.length() != 0) {
-            actual.setValue(Integer.valueOf(numberBuilder.toString()));
+            actual.addValue(Integer.valueOf(numberBuilder.toString()));
             numberBuilder.setLength(0);
           }
           actual = actual.back();
         } else if (c == ',') {
+          assert actual != null;
           if (numberBuilder.length() != 0) {
-            actual.setValue(Integer.valueOf(numberBuilder.toString()));
+            actual.addValue(Integer.valueOf(numberBuilder.toString()));
             numberBuilder.setLength(0);
           }
-          actual = actual.addSibling();
         } else if (Character.isDigit(c)) {
           numberBuilder.append(c);
         }
@@ -73,7 +77,7 @@ public class Day13 implements Day {
     }
 
     public int compare() {
-      return left.compareTo(right);
+      return printReturn(left.compareTo(right));
     }
 
     @Override
@@ -90,98 +94,118 @@ public class Day13 implements Day {
     }
   }
 
-  static class Node implements Comparable<Node> {
-    private Integer value = null;
-    private Node sibling = null;
-    private final List<Node> children = new ArrayList<>();
+  static abstract class Node implements Comparable<Node> {
+    protected Node sibling = null;
     private final Node parent;
 
-    public Node(Node parent) {
+    protected Node(Node parent) {
       this.parent = parent;
     }
 
-    public void setValue(Integer value) {
-      this.value = value;
-    }
-
-    public Node addChild() {
-      var child = new Node(this);
-      children.add(child);
-      return child;
-    }
-
-    public Node addSibling() {
-      return sibling = parent.addChild();
-    }
+    public abstract Node addChild();
+    public abstract void addValue(Integer value);
 
     public Node back() {
       return parent;
     }
+    public int siblingCheck(Node other) {
+//      System.out.println("S " + sibling + ' ' + other.sibling);
+      int siblingCompare;
+      return sibling != null
+        ? (siblingCompare = sibling.compareTo(other.sibling)) == 0
+          ? sibling.siblingCheck(other.sibling)
+          : siblingCompare
+        : other.sibling != null
+          ? -1
+          : 0;
+    }
+  }
 
-    public Node firstChild() {
-      return children.get(0);
+  static class ValueNode extends Node {
+    private final Integer value;
+    public ValueNode(Node parent, Integer value) {
+      super(parent);
+      this.value = value;
+    }
+    @Override
+    public String toString() {
+      return (value != null ? value.toString() : "") +
+          (sibling != null ? "," : "");
     }
 
     @Override
+    public Node addChild() {
+      return this;
+    }
+
+    @Override
+    public void addValue(Integer value) {
+    }
+    @Override
     public int compareTo(Node other) {
+      System.out.println("Vcompare " + this + " vs " + other);
       if (other == null) {
         return 1;
       }
-      if (children.isEmpty()) {
-        return other.children.isEmpty()
-          ? compareValueOrSiblingTo(other)
-          : compareValueOrSiblingToChild(other.firstChild());
+      if (other instanceof ValueNode) {
+        return value.compareTo(((ValueNode) other).value);
       } else {
-        return other.children.isEmpty()
-          ? other.compareValueOrSiblingToChild(firstChild())
-          : firstChild().compareValueOrSiblingTo(other.firstChild());
+        var firstChild = ((ListNode) other).firstChild();
+        return compareTo(firstChild);
       }
     }
+  }
 
-    private int compareValueOrSiblingTo(Node other) {
-      if (value != null && other.value != null) {
-        var c = value.compareTo(other.value);
-        if (c == 0) {
-          if (sibling != null) {
-            return sibling.compareTo(other.sibling);
-          } else {
-            return other.sibling != null ? -1 : 0;
-          }
-        }
-        return c;
-      } else if (value == null) {
-        return other.value == null ? 0 : -1;
-      } else {
+  static class ListNode extends Node {
+    private final List<Node> children = new ArrayList<>();
+    public ListNode(Node parent) {
+      super(parent);
+    }
+    public Node firstChild() {
+      return children.size() > 0 ? children.get(0) : null;
+    }
+    @Override
+    public void addValue(Integer value) {
+      var valueChild = new ValueNode(this, value);
+      if (!children.isEmpty()) {
+        children.get(children.size() - 1).sibling = valueChild;
+      }
+      children.add(valueChild);
+    }
+    @Override
+    public Node addChild() {
+      var child = new ListNode(this);
+      if (!children.isEmpty()) {
+        children.get(children.size() - 1).sibling = child;
+      }
+      children.add(child);
+      return child;
+    }
+    @Override
+    public int compareTo(Node other) {
+      System.out.println("Lcompare " + this + " vs " + other);
+      if (other == null) {
         return 1;
       }
-    }
-
-    private int compareValueOrSiblingToChild(Node other) {
-      if (value != null && other.value != null) {
-        var c = value.compareTo(other.value);
-        if (c == 0) {
-          if (sibling != null) {
-            return sibling.compareTo(other.sibling);
-          } else {
-            return other.sibling != null ? -1 : 0;
-          }
-        }
-        return c;
-      } else if (value == null) {
-        return -1;
+      if (other instanceof ValueNode) {
+        return firstChild() != null
+          ? firstChild().compareTo(other)
+          : -1;
       } else {
-        return 1;
+        var otherChild = ((ListNode) other).firstChild();
+        if (firstChild() != null) {
+          var childCompare = firstChild().compareTo(otherChild);
+          return childCompare == 0
+            ? firstChild().siblingCheck(otherChild)
+            : childCompare;
+        } else {
+          return otherChild != null ? -1 : 0;
+        }
       }
     }
-
     @Override
     public String toString() {
-      if (children.isEmpty()) {
-        return (value != null ? value.toString() : "") +
-          (sibling != null ? "," : "");
-      } else {
-        return "[" + children.stream().map(Node::toString).collect(collectToString()) + (sibling != null ? "]," : ']');
-      }
+      return "[" + children.stream().map(Node::toString).collect(collectToString()) + (sibling != null ? "]," : ']');
     }
   }
 }

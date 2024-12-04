@@ -36,31 +36,27 @@ public class Day13Test {
 
   @Test
   public void nodeTest() {
-    var root = new Day13.Node(null);
-    var actual = root;
-    actual = actual.addChild().addChild();
-    actual.setValue(1);
-    actual = actual.addSibling();
-    actual.setValue(2);
-    actual = actual.back().addSibling();
-    actual.setValue(3);
-    actual = actual.addSibling();
-    actual.setValue(4);
+    Day13.Node root = new Day13.ListNode(null);
+    Day13.Node actual = root;
+    actual = actual.addChild();
+    actual.addValue(1);
+    actual.addValue(2);
     actual = actual.back();
+    actual.addValue(3);
+    actual.addValue(4);
     assertSame(root, actual);
     assertEquals("[[1,2],3,4]", root.toString());
   }
 
   @Test
   public void compareTest() {
-    var node1 = new Day13.Node(null);
-    var node2 = new Day13.Node(null);
+    Day13.Node node1 = new Day13.ListNode(null);
+    Day13.Node node2 = new Day13.ListNode(null);
     assertEquals(0, node1.compareTo(node2));
     node2.addChild();
     assertEquals(-1, node1.compareTo(node2));
     node1.addChild();
     assertEquals(0, node1.compareTo(node2));
-    assertEquals(1, node1.compareTo(node2.firstChild()));
   }
 
   @Test
