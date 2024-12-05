@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Main-Class: dev.madfist.aoc2024.Main
