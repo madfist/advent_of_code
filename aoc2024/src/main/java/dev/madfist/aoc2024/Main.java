@@ -24,7 +24,7 @@ public class Main {
 
       try {
         Class<? extends Day> dayClass =
-            Class.forName("dev.madfist.aoc2022.Day" + args[0]).asSubclass(Day.class);
+            Class.forName("dev.madfist.aoc2024.Day" + args[0]).asSubclass(Day.class);
         Day day = dayClass.getDeclaredConstructor().newInstance();
 
         if (example != null) {
@@ -35,7 +35,7 @@ public class Main {
           System.out.println("part 2: " + day.solveSecond(input));
         }
       } catch (Exception e) {
-        System.err.println(e.getMessage());
+        System.err.println("ERR " + e);
       }
     }
 
