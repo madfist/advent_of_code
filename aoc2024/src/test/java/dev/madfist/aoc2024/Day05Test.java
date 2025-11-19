@@ -45,7 +45,7 @@ public class Day05Test {
 
     @Override
     public String expected2() {
-      return "";
+      return "123";
     }
   };
 
